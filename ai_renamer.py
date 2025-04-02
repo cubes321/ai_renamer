@@ -4,6 +4,7 @@ import pathlib
 from google import genai
 from google.genai import types, errors
 import sys
+import os
 from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
 
 with open('e:/ai/genai_api_key.txt') as file:
@@ -27,6 +28,13 @@ try:
             "rename this pdf file to a new name"]
     )
     print(response.text)
-except genai.Error as e:
+    try:
+#        new_filename = response.text.split()[0] + ".pdf"
+        print(f"Renamed file to: {response.text}")
+        os.rename(filepath, response.text)
+    except Exception as e:
+        print(f"Error renaming file: {e}")
+        sys.exit(1)
+except errors.APIError as e:
     print(f"Error: {e.code} - {e.message}")
     sys.exit(1)
