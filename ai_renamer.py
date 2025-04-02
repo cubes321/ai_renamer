@@ -15,7 +15,6 @@ sys_instruct="Answer in the form of a filename [company]_[date]_[invoice number]
 0
 filepath = pathlib.Path(sys.argv[1])
 
-
 try:
     response = client.models.generate_content(
         config=types.GenerateContentConfig(system_instruction=sys_instruct),
@@ -29,7 +28,6 @@ try:
     )
     print(response.text)
     try:
-#        new_filename = response.text.split()[0] + ".pdf"
         print(f"Renamed file to: {response.text}")
         os.rename(filepath, response.text)
     except Exception as e:
