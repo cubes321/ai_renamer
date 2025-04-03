@@ -27,6 +27,13 @@ try:
             "rename this pdf file to a new name"]
     )
     print(response.text)
+    if response.text == "Invalid input":
+        print("Invalid input. Please provide a valid PDF file.")
+        sys.exit(1)
+    confirm = input(f"Do you want to rename the file to {response.text}? (y/n): ")
+    if confirm.lower() != 'y':
+        print("File renaming cancelled.")
+        sys.exit(1)
     try:
         print(f"Renamed file to: {response.text}")
         os.rename(filepath, response.text)
