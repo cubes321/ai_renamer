@@ -1,1 +1,5 @@
 bill.pdf
+*.pdf
+__pycache__/
+.venv/
+ai_renamer_log.csv
