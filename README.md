@@ -3,8 +3,9 @@
 Renames invoice PDFs to `[company]_[date]_[invoice number]_[amount].pdf` using any
 OpenAI-compatible chat API (OpenAI, Ollama, LM Studio, OpenRouter, Gemini, ...).
 
-The PDF text is extracted locally with `pypdf` and sent as plain text, so scanned
-PDFs without a text layer are skipped.
+By default the PDF text is extracted locally with `pypdf` and sent as plain text,
+which works with any server. Scanned PDFs without a text layer need `--send-pdf`,
+which sends the whole PDF instead (only some servers accept this, e.g. OpenAI).
 
 ## Setup
 
@@ -21,6 +22,18 @@ PDFs without a text layer are skipped.
     python ai_renamer.py bill.pdf                 # asks before renaming
     python ai_renamer.py --dry-run *.pdf          # just show the new names
     python ai_renamer.py -y invoices/*.pdf        # rename without asking
+    python ai_renamer.py --send-pdf scan.pdf      # send the PDF itself (scanned invoices)
+
+Custom filename pattern, using `{company}`, `{date}`, `{invoice_number}` and `{amount}`
+(`.pdf` is added if missing):
+
+    python ai_renamer.py --pattern "{date} {company} {amount}" bill.pdf
+
+Every rename is recorded in `ai_renamer_log.csv` in the PDF's folder. To undo them
+(newest first):
+
+    python ai_renamer.py --undo --dry-run invoices   # show what would be undone
+    python ai_renamer.py --undo invoices             # default folder: current one
 
 Other servers:
 
